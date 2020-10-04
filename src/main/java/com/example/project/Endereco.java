@@ -10,7 +10,15 @@ public class Endereco {
     private String estado;
     private String cep;
 
-    public Endereco(String logradouro, int numero, String complemento, String bairro, String municipio, String estado, String cep) {
+    public Endereco(
+        String logradouro, 
+        int numero, 
+        String complemento, 
+        String bairro, 
+        String municipio, 
+        String estado, 
+        String cep
+    ) {
         this.logradouro = logradouro;
         this.numero = numero;
         this.complemento = complemento;
@@ -48,5 +56,34 @@ public class Endereco {
         return this.cep;
     }
 
+    public String dadosEndereco() {
+        
+        validarCamposObrigatorios();
+        
+        String _logradouro = getLogradouro() + ", ";
+		String _numero = (getNumero() <= 0)? "s/n" : String.format("%d", getNumero());
+		String _complemento = Loja.isNullEmpty(getComplemento())? "" : " " + getComplemento();
+		String _bairro = Loja.isNullEmpty(getBairro())? "" : getBairro() + " - ";
+		String _municipio = getMunicipio() + " - ";
+        String _cep = Loja.isNullEmpty(getCep())? "" : "CEP:" + getCep();
+        
+        String output;
+        output = _logradouro + _numero + _complemento + "\n";
+        output += _bairro + _municipio + getEstado() + "\n";
+        output += _cep;
+        return output;
 
+    }
+
+    public void validarCamposObrigatorios() {
+
+            if(Loja.isNullEmpty(getLogradouro()))
+                throw new RuntimeException("O campo logradouro do endereço é obrigatório");
+            
+            if(Loja.isNullEmpty(getMunicipio()))
+                throw new RuntimeException("O campo município do endereço é obrigatório");
+            
+            if(Loja.isNullEmpty(getEstado()))
+                throw new RuntimeException("O campo estado do endereço é obrigatório");
+    }
 }
